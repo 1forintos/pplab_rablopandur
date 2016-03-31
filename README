@@ -1,0 +1,51 @@
+####
+Buta jatekosok a laborgyakorlathoz
+####
+
+player.h, player.cpp :
+Jatekos alaposztaly, ami a szerver kommunikaciot valositja meg.
+
+main.cpp :
+Egyszeru rendort, vagy rablot megvalosito program.
+Veletlenszeruen mozog es sok-sok debug uzenete ir ki.
+
+teszt.sh :
+teszt script, ami elindit egy rablot es nehany rendort.
+
+mpimain.cpp :
+Buta rendorok MPI uzenetekkel kommmunikalnak egymasal. 
+Ha egy rendor meglat egy rablot, akkor felkialt, amit atobbiek hallanak.
+
+Forditas:
+make
+
+(Az MPI-os valtozat forditasahoz es futtatasahoz be kell allitani a 
+PATH es egyeb kornyezeti valtozokat.
+  module load mpi
+parancssal teheto meg.
+)
+
+
+Futtatas:
+Feltetelezzuk, hogy a laborgepen, amin dolgozunk a szervert elinditottuk. (szerver.bat)
+A szerver fixen a 15623-as porton hallgat. Ide kell tunnelezni a klinenseket.
+Hogy ne legyen portutkozes, az a javaslat hogy mindeki egyedi portot (RABLO_PORT) hasznaljon.
+LPORT=15000+UID, ahol UID az adott felhasznalo UID-je (id -u)
+  let RABLO_PORT=15000+`id -u`
+  export RABLO_PORT
+A laborgepet es a jatekosokat futtato gepet (pl. ural2) ssh tunnelen keresztuk kapcsoljuk ossze.
+
+(putty: 
+  Session->SSH->Tunnels
+  X Local ports accept connection from othrer hosts
+  Source port: RABLO_PORT_ERTEKE
+  Destination: localhost:15623
+  X Remote
+  X Ipv4
+  Add
+)
+
+Ha a javas server fut indithato a test.sh, vagy az mpitest.sh
+
+A *.log-okban lathato a kommunikacio.
+
