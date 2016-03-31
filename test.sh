@@ -10,7 +10,7 @@ if [ x$RABLO_PORT = x ]; then
    let RABLO_PORT=15000+`id -u`
 fi
 
-echo RABLOr_PORT: $RABLO_PORT
+echo RABLO_PORT: $RABLO_PORT
 PORT=$RABLO_PORT
 HOST=localhost
 COPS=5

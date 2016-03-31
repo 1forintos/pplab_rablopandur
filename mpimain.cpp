@@ -43,11 +43,12 @@ int main(int argc, char ** argv)
     
         // rendor inditasa
         Player pl(argv[1], port, Player::cop);
-        cerr << rank << ". rendor kezdo pozicioja: " << pl.getx() << "," << pl.gety() << endl;
-    
+        cerr << rank << ". rendor kezdo pozicioja: " << pl.getx() << "," << pl.gety() << endl;    
+        Player::direction d = Player::none;
+
         while(1) {
-            usleep(1000);
-    
+            struct timespec tim = { 0, 100000 }, trem;
+            nanosleep(&tim, &trem);
             MPI::Status stat;
             if (MPI::COMM_WORLD.Iprobe(MPI::ANY_SOURCE, TAG_RABLO, stat)) { // jott valami
                 char buff[6];
@@ -56,19 +57,44 @@ int main(int argc, char ** argv)
             }
     
             int r = rand() % (Player::right + 1);
-            Player::direction d;
-            if (r == 0) d = Player::up;
-            else if (r==1) d = Player::down;
-            else if (r==2) d = Player::left;
-            else d = Player::right;
-            char *buffer = pl.move(d);
+            char *buffer;
+            if(d == Player::none) {
+                if (r == 0) d = Player::up;
+                else if (r==1) d = Player::down;
+                else if (r==2) d = Player::left;
+                else d = Player::right;    
+                        
+            }
+            buffer = pl.move(d);    
+            d = Player::none;
+            Player::direction processState;
             for (char *p = buffer; *p; p++) {
-                if (*p == '1') {                      // rablot latok nagyot kialtok!
-                    for (int i = 0; i < size; i++) {  // minden rendornek elkuldjuk
-                        if (i != rank)
-                            MPI::COMM_WORLD.Send("Rablo", 6, MPI::CHAR, i, TAG_RABLO);
-                    }
-                    break;                            // csak egy rablora szamitunk
+                switch(*p) {
+                    case 'U':
+                        processState = Player::up;
+                    break;
+                    case 'R':
+                        processState = Player::right;
+                    break;
+                    case 'D':
+                        processState = Player::down;
+                    break;
+                    case 'L':
+                        processState = Player::left;
+                    break;
+                    default:
+                        if (*p == '1') {  
+                            d = processState;
+                            /*cout << std::endl << "TEST: " << buffer << " END_TEST" << std::endl;                 // rablot latok nagyot kialtok!
+                            for (int i = 0; i < size; i++) {  // minden rendornek elkuldjuk
+                                if (i != rank)
+                                    MPI::COMM_WORLD.Send("Rablo", 6, MPI::CHAR, i, TAG_RABLO);
+                            }*/
+
+
+                            //break;                            // csak egy rablora szamitunk
+                        }  
+                        break;
                 }
             }
             delete[] buffer;

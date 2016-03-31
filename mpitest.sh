@@ -13,14 +13,14 @@ fi
 PORT=$RABLO_PORT
 HOST=localhost
 
-echo RABLOr_PORT: $RABLO_PORT
+echo RABLO_PORT: $RABLO_PORT
 
 echo "A gonosz rablo megjelent a banknal es kirabolta."
 ./main $HOST $PORT burglar &>burglar.log &
 BPID=$!
 echo "A rablo elkezdett menekulni."
 sleep 5
-mpirun -np 5 mpimain $HOST $PORT &>cops.log &
+mpirun -np 50 mpimain $HOST $PORT &>cops.log &
 CPID=$!
 echo "A rendorok elindultak."
 sleep 30

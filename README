@@ -30,7 +30,7 @@ Futtatas:
 Feltetelezzuk, hogy a laborgepen, amin dolgozunk a szervert elinditottuk. (szerver.bat)
 A szerver fixen a 15623-as porton hallgat. Ide kell tunnelezni a klinenseket.
 Hogy ne legyen portutkozes, az a javaslat hogy mindeki egyedi portot (RABLO_PORT) hasznaljon.
-LPORT=15000+UID, ahol UID az adott felhasznalo UID-je (id -u)
+RABLO_PORT=15000+UID, ahol UID az adott felhasznalo UID-je (id -u)
   let RABLO_PORT=15000+`id -u`
   export RABLO_PORT
 A laborgepet es a jatekosokat futtato gepet (pl. ural2) ssh tunnelen keresztuk kapcsoljuk ossze.

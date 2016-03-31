@@ -6,7 +6,7 @@
 class Player
 {
     public:
-        typedef enum {up, down, left, right} direction;
+        typedef enum {up, down, left, right, none} direction;
         typedef enum {burglar, cop} player_t;
 
         // Create player and login to the server

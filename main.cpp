@@ -2,6 +2,7 @@
 #include <sstream>
 #include <string>
 #include <stdlib.h>
+#include <time.h>
 
 #include "player.h"
 
@@ -23,7 +24,8 @@ int main(int argc, char ** argv) {
         cerr << argv[3] << ": " << pl.getx() <<" " << pl.gety() << endl;
     
         while(1) {
-            usleep(1000);
+            struct timespec tim = { 0, 100000 }, trem;
+            nanosleep(&tim, &trem);
             int r = rand() % (Player::right + 1);
             Player::direction d;
             if (r == 0) d = Player::up;
